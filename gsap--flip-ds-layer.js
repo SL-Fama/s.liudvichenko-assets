@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     tl = gsap.timeline({
       scrollTrigger: {
         trigger: positionEl,
-        start: "top bottom+=75%",
+        start: "top+75% bottom",
         endTrigger: positionEl,
         end: "top+=50% bottom",
         scrub: true
