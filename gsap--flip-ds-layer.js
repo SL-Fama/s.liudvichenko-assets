@@ -1,58 +1,75 @@
-// SETUP PLUGINS
-gsap.registerPlugin(ScrollTrigger, Flip);
+window.addEventListener("DOMContentLoaded", (event) => {
+  // SETUP PLUGINS
+  gsap.registerPlugin(ScrollTrigger, Flip);
+  ScrollTrigger.normalizeScroll(true);
 
-// Use with caution and test thoroughly
-ScrollTrigger.normalizeScroll(true);
+  // SETUP ELEMENTS
+  let zoneEl = $("[js-scrollflip-element='zone']"),
+    targetEl = $("[js-scrollflip-element='target']"),
+    positionEl = $("[js-scrollflip-element='position']");
 
-// SETUP ELEMENTS
-const zoneEl = document.querySelectorAll("[js-scrollflip-element='zone']");
-const targetEl = document.querySelector("[js-scrollflip-element='target']");
-const positionEl = document.querySelector("[js-scrollflip-element='position']");
+  // SETUP TIMELINE
+  let tl;
+  function createTimeline() {
+    if (tl) {
+      tl.kill();
+      gsap.set(targetEl, { clearProps: "all" });
+    }
 
-// SETUP TIMELINE
-let tl;
+    tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: positionEl,
+        start: "top bottom-=20%",
+        endTrigger: positionEl,
+        end: "top+=50% bottom",
+        scrub: true
+      }
+    });
 
-function createTimeline() {
-  if (tl) {
-    tl.kill();
-    gsap.set(targetEl, { clearProps: "all" });
+    zoneEl.each(function (index) {
+      let nextZoneEl = zoneEl.eq(index + 1);
+      if (nextZoneEl.length) {
+        let nextZoneDistance =
+          nextZoneEl.offset().top + nextZoneEl.innerHeight() / 2;
+        let thisZoneDistance = $(this).offset().top + $(this).innerHeight() / 2;
+        let zoneDifference = nextZoneDistance - thisZoneDistance;
+        tl.add(
+          Flip.fit(targetEl[0], nextZoneEl[0], {
+            duration: zoneDifference,
+            ease: "power2.inOut"
+          })
+        );
+      }
+    });
   }
 
-  tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: positionEl,
-      start: "top bottom+=20%",
-      endTrigger: positionEl,
-      end: "top+=50% bottom",
-      scrub: true,
-      onEnter: createTimeline,
-      onEnterBack: createTimeline
-    }
+  createTimeline();
+
+  // SETUP RESIZE
+  let resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      createTimeline();
+    }, 250);
   });
 
-  zoneEl.forEach((zone, index) => {
-    const nextZone = zoneEl[index + 1];
-    if (nextZone) {
-      const nextZoneDistance = nextZone.offsetTop + nextZone.offsetHeight / 2;
-      const thisZoneDistance = zone.offsetTop + zone.offsetHeight / 2;
-      const zoneDifference = nextZoneDistance - thisZoneDistance;
-
-      tl.add(
-        Flip.fit(targetEl, nextZone, {
-          duration: zoneDifference,
-          ease: "power2.inOut"
-        })
-      );
-    }
+  // Trigger a function when the position element enters the viewport
+  ScrollTrigger.create({
+    trigger: positionEl,
+    start: "top bottom-=20%",
+    onEnter: function () {
+      // Execute the createTimeline function when positionEl enters the viewport
+      createTimeline();
+    },
   });
-}
-
-// Initial creation
-createTimeline();
-
-// SETUP RESIZE
-let resizeRAF;
-window.addEventListener("resize", () => {
-  cancelAnimationFrame(resizeRAF);
-  resizeRAF = requestAnimationFrame(createTimeline);
+  // Trigger a function when the position element enters back the viewport
+  ScrollTrigger.create({
+    trigger: positionEl,
+    start: "bottom top+=20%",
+    onEnterBack: function () {
+      // Execute the createTimeline function when positionEl enters the viewport
+      createTimeline();
+    },
+  });
 });
