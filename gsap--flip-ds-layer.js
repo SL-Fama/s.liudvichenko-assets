@@ -2,12 +2,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // SETUP PLUGINS
   gsap.registerPlugin(ScrollTrigger, Flip);
   ScrollTrigger.normalizeScroll(true);
-
   // SETUP ELEMENTS
   let zoneEl = $("[js-scrollflip-element='zone']"),
     targetEl = $("[js-scrollflip-element='target']"),
     positionEl = $("[js-scrollflip-element='position']");
-
   // SETUP TIMELINE
   let tl;
   function createTimeline() {
@@ -15,17 +13,15 @@ window.addEventListener("DOMContentLoaded", (event) => {
       tl.kill();
       gsap.set(targetEl, { clearProps: "all" });
     }
-
     tl = gsap.timeline({
       scrollTrigger: {
         trigger: positionEl,
-        start: "top bottom",
+        start: "top bottom-=5vh", // Modified this line
         endTrigger: positionEl,
         end: "top+=50% bottom",
         scrub: true
       }
     });
-
     zoneEl.each(function (index) {
       let nextZoneEl = zoneEl.eq(index + 1);
       if (nextZoneEl.length) {
@@ -42,9 +38,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
     });
   }
-
   createTimeline();
-
   // SETUP RESIZE
   let resizeTimer;
   window.addEventListener("resize", function () {
@@ -53,11 +47,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
       createTimeline();
     }, 250);
   });
-
   // Trigger a function when the position element enters the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "top bottom",
+    start: "top bottom-=5vh", // Modified this line
     onEnter: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
@@ -66,7 +59,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters back the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "bottom top",
+    start: "bottom top+=5vh", // Modified this line
     onEnterBack: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
