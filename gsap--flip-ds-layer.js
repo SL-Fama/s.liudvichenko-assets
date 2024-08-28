@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "top+=50% bottom",
+    start: "top bottom",
     onEnter: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
