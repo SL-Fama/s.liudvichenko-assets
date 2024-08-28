@@ -42,4 +42,4 @@
 
 // Example usage:
 // Adjust scroll speed by calling the setScrollSpeed function
-setScrollSpeed(3); // Higher values for faster scroll, lower values for slower scroll
+setScrollSpeed(1); // Higher values for faster scroll, lower values for slower scroll
