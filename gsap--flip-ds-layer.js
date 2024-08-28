@@ -50,7 +50,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "top bottom-=5vh", // Modified this line
+    start: "top bottom-=50vh", // Modified this line
     onEnter: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
@@ -59,7 +59,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters back the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "bottom top+=5vh", // Modified this line
+    start: "bottom top+=50vh", // Modified this line
     onEnterBack: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
