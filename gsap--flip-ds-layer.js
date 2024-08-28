@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     tl = gsap.timeline({
       scrollTrigger: {
         trigger: positionEl,
-        start: "top-=60vh bottom",
+        start: "top bottom",
         endTrigger: positionEl,
         end: "top+=50% bottom",
         scrub: true
@@ -57,7 +57,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "top bottom",
+    start: "top+50vh bottom",
     onEnter: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
