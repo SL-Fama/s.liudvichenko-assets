@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         trigger: positionEl,
         start: "top+=50% bottom",
         endTrigger: positionEl,
-        end: "top+=50% bottom",
+        end: "top+=75% bottom",
         scrub: true
       }
     });
