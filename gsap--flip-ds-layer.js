@@ -78,7 +78,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters back the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "bottom top-=20%",
+    start: "bottom top+=20%",
     onEnterBack: function () {
       debugLog("Position Element Entered Viewport (backwards) - Creating Timeline");
       createTimeline();
