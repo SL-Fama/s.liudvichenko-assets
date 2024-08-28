@@ -1,93 +1,58 @@
-window.addEventListener("DOMContentLoaded", (event) => {
-  // SETUP PLUGINS
-  gsap.registerPlugin(ScrollTrigger, Flip);
-  ScrollTrigger.normalizeScroll(true);
+// SETUP PLUGINS
+gsap.registerPlugin(ScrollTrigger, Flip);
 
-  // DEBUG FUNCTION
-  function debugLog(message) {
-    console.log(`%c${message}`, 'background: #222; color: #bada55');
+// Use with caution and test thoroughly
+ScrollTrigger.normalizeScroll(true);
+
+// SETUP ELEMENTS
+const zoneEl = document.querySelectorAll("[js-scrollflip-element='zone']");
+const targetEl = document.querySelector("[js-scrollflip-element='target']");
+const positionEl = document.querySelector("[js-scrollflip-element='position']");
+
+// SETUP TIMELINE
+let tl;
+
+function createTimeline() {
+  if (tl) {
+    tl.kill();
+    gsap.set(targetEl, { clearProps: "all" });
   }
 
-  // SETUP ELEMENTS
-  let zoneEl = $("[js-scrollflip-element='zone']"),
-    targetEl = $("[js-scrollflip-element='target']"),
-    positionEl = $("[js-scrollflip-element='position']");
-
-  // SETUP TIMELINE
-  let tl;
-  function createTimeline() {
-    debugLog("Creating Timeline");
-    if (tl) {
-      tl.kill();
-      gsap.set(targetEl, { clearProps: "all" });
+  tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: positionEl,
+      start: "top bottom-=20%",
+      endTrigger: positionEl,
+      end: "top+=50% bottom",
+      scrub: true,
+      onEnter: createTimeline,
+      onEnterBack: createTimeline
     }
-    tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: positionEl,
-        start: "top bottom-=20%",
-        endTrigger: positionEl,
-        end: "top+=50% bottom",
-        scrub: true,
-        onEnter: () => debugLog("Main Timeline: onEnter"),
-        onLeave: () => debugLog("Main Timeline: onLeave"),
-        onEnterBack: () => debugLog("Main Timeline: onEnterBack"),
-        onLeaveBack: () => debugLog("Main Timeline: onLeaveBack"),
-        onUpdate: (self) => debugLog(`Main Timeline: Progress ${self.progress.toFixed(2)}`)
-      }
-    });
-    zoneEl.each(function (index) {
-      let nextZoneEl = zoneEl.eq(index + 1);
-      if (nextZoneEl.length) {
-        let nextZoneDistance =
-          nextZoneEl.offset().top + nextZoneEl.innerHeight() / 2;
-        let thisZoneDistance = $(this).offset().top + $(this).innerHeight() / 2;
-        let zoneDifference = nextZoneDistance - thisZoneDistance;
-        tl.add(
-          Flip.fit(targetEl[0], nextZoneEl[0], {
-            duration: zoneDifference,
-            ease: "power2.inOut"
-          })
-        );
-        debugLog(`Added Flip animation for zone ${index + 1}`);
-      }
-    });
-  }
-  createTimeline();
-
-  // SETUP RESIZE
-  let resizeTimer;
-  window.addEventListener("resize", function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      debugLog("Window Resized - Recreating Timeline");
-      createTimeline();
-    }, 250);
   });
 
-  // Trigger a function when the position element enters the viewport
-  ScrollTrigger.create({
-    trigger: positionEl,
-    start: "top bottom-=20%",
-    onEnter: function () {
-      debugLog("Position Element Entered Viewport - Creating Timeline");
-      createTimeline();
-    },
-    markers: true  // This will add visual markers to the trigger points
-  });
+  zoneEl.forEach((zone, index) => {
+    const nextZone = zoneEl[index + 1];
+    if (nextZone) {
+      const nextZoneDistance = nextZone.offsetTop + nextZone.offsetHeight / 2;
+      const thisZoneDistance = zone.offsetTop + zone.offsetHeight / 2;
+      const zoneDifference = nextZoneDistance - thisZoneDistance;
 
-  // Trigger a function when the position element enters back the viewport
-  ScrollTrigger.create({
-    trigger: positionEl,
-    start: "bottom top+=20%",
-    onEnterBack: function () {
-      debugLog("Position Element Entered Viewport (backwards) - Creating Timeline");
-      createTimeline();
-    },
-    markers: true  // This will add visual markers to the trigger points
+      tl.add(
+        Flip.fit(targetEl, nextZone, {
+          duration: zoneDifference,
+          ease: "power2.inOut"
+        })
+      );
+    }
   });
+}
 
-  // DEBUG: Log initial positions
-  debugLog(`Position Element Top: ${positionEl.offset().top}`);
-  debugLog(`Viewport Height: ${window.innerHeight}`);
-  debugLog(`Trigger Point (5vh from bottom): ${window.innerHeight - (window.innerHeight * 0.05)}`);
+// Initial creation
+createTimeline();
+
+// SETUP RESIZE
+let resizeRAF;
+window.addEventListener("resize", () => {
+  cancelAnimationFrame(resizeRAF);
+  resizeRAF = requestAnimationFrame(createTimeline);
 });
