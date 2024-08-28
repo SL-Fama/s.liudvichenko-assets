@@ -22,8 +22,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         start: "top bottom+=20%",
         endTrigger: positionEl,
         end: "top+=50% bottom",
-        scrub: true,
-        markers: true
+        scrub: true
       }
     });
 
@@ -58,7 +57,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "top bottom-=20%",
+    start: "top bottom+=20%",
     onEnter: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
@@ -67,7 +66,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Trigger a function when the position element enters back the viewport
   ScrollTrigger.create({
     trigger: positionEl,
-    start: "bottom top+=20%",
+    start: "bottom top-=20%",
     onEnterBack: function () {
       // Execute the createTimeline function when positionEl enters the viewport
       createTimeline();
