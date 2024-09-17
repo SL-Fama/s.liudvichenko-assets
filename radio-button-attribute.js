@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     nameInput.addEventListener("input", updateFirstLetter);
 
     // Set "checked" attribute for the element with id "fake-LMM-llama3"
-    document.getElementById("fake-LMM-gemini").setAttribute("checked", "");
+    document.getElementById("fake-LMM-llama3").setAttribute("checked", "");
 
     // Second functionality: Handle radio buttons to update LLM logo and name
     const radioButtons = document.querySelectorAll('input[name="llm-choice"]');
