@@ -7,6 +7,9 @@
         { x: 170, y: 160 }
     ];
 
+    const chartWidth = 170; // Width of the chart in SVG coordinates
+    const step = 40; // Step size for the X axis (distance between points)
+
     // Function to generate path string from data points
     function generatePath(data) {
         return data.map((point, index) => {
@@ -21,9 +24,16 @@
     }
 
     // Function to simulate adding new data points and update the chart
-    function addDataPoint(newPoint) {
-        // Add new point and remove the first one to keep the chart moving
-        dataPoints.push(newPoint);
+    function addDataPoint(newY) {
+        // Shift all points to the left
+        dataPoints.forEach(point => {
+            point.x -= step;
+        });
+
+        // Add new point at the end, but keep it within the chart bounds
+        dataPoints.push({ x: chartWidth, y: newY });
+
+        // Remove the first point to keep the chart moving
         dataPoints.shift();
         updateChart();
     }
@@ -31,6 +41,5 @@
     // Simulate data changes
     setInterval(() => {
         const randomY = Math.floor(Math.random() * 100) + 100; // Random Y between 100-200
-        const newPoint = { x: 170, y: randomY };
-        addDataPoint(newPoint);
+        addDataPoint(randomY);
     }, 1000);
