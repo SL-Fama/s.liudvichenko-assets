@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    // First functionality: Handle name input and display first letter or "0"
+    // Handle name input and display first letter or "0"
     const nameInput = document.querySelector('[wa-data="name-input"]');
     const firstLetterDisplay = document.querySelector('[wa-data="firs-letter"]');
 
@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // Set "checked" attribute for the element with id "fake-LMM-llama3"
     document.getElementById("fake-LMM-llama3").setAttribute("checked", "");
 
-    // Second functionality: Handle radio buttons to update LLM logo and name
-    const radioButtons = document.querySelectorAll('input[name="llm-choice"]');
+    // Handle radio buttons to update LLM logo and name
+    const radioButtons = document.querySelectorAll('input[name="fake-LMM-form"]');
     const llmLogos = document.querySelectorAll('img[wa-data="LLM-logo"]');
     const llmName = document.querySelector('[wa-data="LLM-name"]');
 
