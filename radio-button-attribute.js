@@ -1,3 +1,3 @@
 document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("fake-LMM-llama3").value = "checked";
+  document.getElementById("fake-LMM-llama3").setAttribute("checked", "checked");
 });
