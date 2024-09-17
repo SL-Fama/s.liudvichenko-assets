@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Handle radio buttons to update LLM logo and name
     const radioButtons = document.querySelectorAll('input[name="fake-LMM-form"]');
     const llmLogos = document.querySelectorAll('img[wa-data="LLM-logo"]');
-    const llmName = document.querySelector('[wa-data="LLM-name"]');
+    const llmNames = document.querySelectorAll('[wa-data="LLM-name"]');
 
     // LLM image URLs and names
     const llmData = {
@@ -55,8 +55,10 @@ document.addEventListener("DOMContentLoaded", function() {
             img.setAttribute('src', selectedLLM.logo);
         });
 
-        // Update LLM name
-        llmName.textContent = selectedLLM.name;
+        // Update all LLM name text elements
+        llmNames.forEach(nameElement => {
+            nameElement.textContent = selectedLLM.name;
+        });
     }
 
     // Initialize with default value (llama3)
