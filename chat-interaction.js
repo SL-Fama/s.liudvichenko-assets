@@ -1,9 +1,27 @@
-// Function to scroll the chat container to the bottom
+// Function to disable body scrolling
+function disableBodyScroll() {
+    document.body.style.overflow = 'hidden';
+}
+
+// Function to restore body scrolling
+function enableBodyScroll() {
+    document.body.style.overflow = '';
+}
+
+// Add event listeners to the chat container
+const chatContainer = document.querySelector('[chat-scroll="container"]');
+
+// Disable body scroll when mouse is over the chat container
+chatContainer.addEventListener('mouseenter', disableBodyScroll);
+
+// Enable body scroll when the mouse leaves the chat container
+chatContainer.addEventListener('mouseleave', enableBodyScroll);
+
+// Scroll to bottom functionality
 function scrollToBottom() {
-    const chatContainer = document.querySelector('[chat-scroll="container"]');
     chatContainer.scrollTo({
         top: chatContainer.scrollHeight,
-        behavior: 'smooth' // Smooth scrolling to the bottom
+        behavior: 'smooth'
     });
 }
 
