@@ -1,29 +1,38 @@
 let previousScrollY; // To store the body scroll position before disabling
+let isScrollDisabled = false; // To track whether scroll is disabled
 
 // Function to disable body scrolling
 function disableBodyScroll() {
-    // Store the current scroll position
     previousScrollY = window.scrollY;
 
-    // Add a fixed position to the body to prevent scrolling, while keeping the page "in place"
     document.body.style.position = 'fixed';
     document.body.style.top = `-${previousScrollY}px`;
     document.body.style.left = '0';
     document.body.style.right = '0';
-    document.body.style.overflow = 'hidden'; // Stronger way to prevent scrolling
+    document.body.style.overflow = 'hidden';
 }
 
-// Function to enable body scrolling (restore original state)
+// Function to enable body scrolling
 function enableBodyScroll() {
-    // Restore body's scroll position and default styling
     document.body.style.position = '';
     document.body.style.top = '';
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.style.overflow = '';
 
-    // Restore the scroll position to where it was before disabling scroll
     window.scrollTo(0, previousScrollY);
+}
+
+// Function to disable scrolling within the chat container
+function disableContainerScroll() {
+    isScrollDisabled = true; // Track that scroll is disabled
+    chatContainer.style.pointerEvents = 'none'; // Disable all pointer events (blocks scrolling)
+}
+
+// Function to enable scrolling within the chat container
+function enableContainerScroll() {
+    isScrollDisabled = false;
+    chatContainer.style.pointerEvents = ''; // Re-enable pointer events
 }
 
 // Add event listeners to the chat container
@@ -37,11 +46,19 @@ chatContainer.addEventListener('mouseleave', enableBodyScroll);
 
 // Function to scroll the chat container to the bottom
 function scrollToBottom() {
-    chatContainer.scrollTo({
-        top: chatContainer.scrollHeight,
-        behavior: 'smooth' // Smooth scrolling to the bottom
-    });
+    if (!isScrollDisabled) {
+        chatContainer.scrollTo({
+            top: chatContainer.scrollHeight,
+            behavior: 'smooth' // Smooth scrolling to the bottom
+        });
+    }
 }
 
 // Attach click event to the button with chat-scroll="reset"
-document.querySelector('[chat-scroll="reset"]').addEventListener('click', scrollToBottom);
+document.querySelector('[chat-scroll="reset"]').addEventListener('click', function() {
+    scrollToBottom();          // Scroll to the bottom when the button is clicked
+    disableContainerScroll();   // Disable scrolling in the container after button click
+});
+
+// Re-enable chat container scrolling when the mouse leaves (optional)
+chatContainer.addEventListener('mouseleave', enableContainerScroll);
