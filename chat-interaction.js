@@ -1,27 +1,28 @@
-// Function to disable body scrolling
+// Disable body scroll, allow chat container to scroll
 function disableBodyScroll() {
+    // Prevent scrolling on the body by setting fixed positioning
     document.body.style.overflow = 'hidden';
 }
 
-// Function to restore body scrolling
+// Enable body scroll by removing the override
 function enableBodyScroll() {
     document.body.style.overflow = '';
 }
 
-// Add event listeners to the chat container
+// Attach event listeners for mouse enter/leave to the chat container
 const chatContainer = document.querySelector('[chat-scroll="container"]');
 
-// Disable body scroll when mouse is over the chat container
+// Disable body scroll when the mouse enters the chat container
 chatContainer.addEventListener('mouseenter', disableBodyScroll);
 
-// Enable body scroll when the mouse leaves the chat container
+// Restore body scroll when the mouse leaves the chat container
 chatContainer.addEventListener('mouseleave', enableBodyScroll);
 
-// Scroll to bottom functionality
+// Function to scroll the chat container to the bottom
 function scrollToBottom() {
     chatContainer.scrollTo({
         top: chatContainer.scrollHeight,
-        behavior: 'smooth'
+        behavior: 'smooth'  // Smooth scrolling effect
     });
 }
 
