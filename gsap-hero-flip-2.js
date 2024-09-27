@@ -15,7 +15,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   gsap.registerPlugin(ScrollTrigger, Flip);
 
   // SCOPED NORMALIZATION: Target sections using a custom attribute
-  ScrollTrigger.normalizeScroll({
+  //ScrollTrigger.normalizeScroll({
     // Target only elements that have gsap-scroll-normalize="true" attribute
     targets: "[gsap-scroll-normalize='true']"
   });
