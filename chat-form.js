@@ -19,15 +19,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return email.includes('@') && email.includes('.');
     }
 
-    // Generic function to handle button swap (now using flex instead of block)
+    // Generic function to handle button swap
     function toggleButton(wrapper, isValid) {
         const disabledButton = wrapper.querySelector('.message--button--disabled');
         const regularButton = wrapper.querySelector('.message--button');
         if (isValid) {
             disabledButton.style.display = 'none';
-            regularButton.style.display = 'flex'; // Use flex instead of block
+            regularButton.style.display = 'flex'; // Show regular button
         } else {
-            disabledButton.style.display = 'flex'; // Use flex instead of block
+            disabledButton.style.display = 'flex'; // Show disabled button
             regularButton.style.display = 'none';
         }
     }
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
     emailInput.addEventListener('input', function () {
         const email = emailInput.value;
         emailSpan.textContent = email; // Update chat span
-        toggleButton(emailWrapper, validateEmail(email)); // Toggle buttons
+        toggleButton(emailWrapper, validateEmail(email)); // Toggle buttons based on validation
     });
 
     // Update span content and validate name (not empty)
@@ -45,13 +45,13 @@ document.addEventListener('DOMContentLoaded', function () {
         nameSpan.forEach(span => {
             span.textContent = name; // Update all chat spans
         });
-        toggleButton(nameWrapper, name.length > 0); // Toggle buttons
+        toggleButton(nameWrapper, name.length > 0); // Toggle buttons based on validation
     });
 
     // Update span content and validate project description (not empty)
     descriptionInput.addEventListener('input', function () {
         const description = descriptionInput.value;
         descriptionSpan.textContent = description; // Update chat span
-        toggleButton(descriptionWrapper, description.length > 0); // Toggle buttons
+        toggleButton(descriptionWrapper, description.length > 0); // Toggle buttons based on validation
     });
 });
