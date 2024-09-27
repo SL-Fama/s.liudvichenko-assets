@@ -19,16 +19,16 @@ document.addEventListener('DOMContentLoaded', function () {
         return email.includes('@') && email.includes('.');
     }
 
-    // Generic function to handle button swap
+    // Generic function to handle button swap (now using flex instead of block)
     function toggleButton(wrapper, isValid) {
         const disabledButton = wrapper.querySelector('.message--button--disabled');
         const regularButton = wrapper.querySelector('.message--button');
         if (isValid) {
             disabledButton.style.display = 'none';
-            regularButton.style.display = 'flex';
+            regularButton.style.display = 'flex'; // Use flex instead of block
         } else {
-            disabledButton.style.display = 'flex';
-            regularButton.style.display = 'flex';
+            disabledButton.style.display = 'flex'; // Use flex instead of block
+            regularButton.style.display = 'none';
         }
     }
 
