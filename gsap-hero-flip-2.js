@@ -1,6 +1,6 @@
 // SCROLL FLIP POWER-UP
 window.addEventListener("DOMContentLoaded", (event) => {
-  // Attribute value checker
+  // attribute value checker
   function attr(defaultVal, attrVal) {
     const defaultValType = typeof defaultVal;
     if (typeof attrVal !== "string" || attrVal.trim() === "") return defaultVal;
@@ -11,37 +11,36 @@ window.addEventListener("DOMContentLoaded", (event) => {
     return defaultVal;
   }
 
-  // Register GSAP plugins
   gsap.registerPlugin(ScrollTrigger, Flip);
-
-
-  // Scrollflip component
+  ScrollTrigger.normalizeScroll(true);
+  
+  // scrollflip component
   $("[tr-scrollflip-element='component']").each(function (index) {
     let componentEl = $(this),
       originEl = componentEl.find("[tr-scrollflip-element='origin']"),
       targetEl = componentEl.find("[tr-scrollflip-element='target']"),
       scrubStartEl = componentEl.find("[tr-scrollflip-scrubstart]"),
       scrubEndEl = componentEl.find("[tr-scrollflip-scrubend]");
-    
+
     let startSetting = attr("top top", scrubStartEl.attr("tr-scrollflip-scrubstart")),
       endSetting = attr("bottom bottom", scrubEndEl.attr("tr-scrollflip-scrubend")),
       staggerSpeedSetting = attr(0, componentEl.attr("tr-scrollflip-staggerspeed")),
       staggerDirectionSetting = attr("start", componentEl.attr("tr-scrollflip-staggerdirection")),
       scaleSetting = attr(false, componentEl.attr("tr-scrollflip-scale")),
       breakpointSetting = attr(0, componentEl.attr("tr-scrollflip-breakpoint"));
-
+    
     let componentIndex = index,
       timeline,
       resizeTimer;
 
-    // Assign matching data flip IDs
+    // assign matching data flip ids
     originEl.each(function (index) {
       let flipId = `${componentIndex}-${index}`;
       $(this).attr("data-flip-id", flipId);
       targetEl.eq(index).attr("data-flip-id", flipId);
     });
 
-    // Create timeline for animations
+    // create timeline
     function createTimeline() {
       if (timeline) {
         timeline.kill();
@@ -59,21 +58,23 @@ window.addEventListener("DOMContentLoaded", (event) => {
             scrub: true
           }
         });
-        timeline.add(Flip.from(state, {
-          targets: targetEl,
-          scale: scaleSetting,
-          stagger: {
-            amount: staggerSpeedSetting,
-            from: staggerDirectionSetting
-          }
-        }));
+        timeline.add(Flip.from(state, { targets: targetEl, scale: scaleSetting, stagger: { amount: staggerSpeedSetting, from: staggerDirectionSetting }}));
       });
       $("body").removeClass("scrollflip-relative");
     }
-
+    
     createTimeline();
 
-    // Update timeline on window resize
+    // Add stopPropagation event listeners
+    let stopPropagation = e => e.stopImmediatePropagation();
+    componentEl.find("div").each(function() {
+      if (this.scrollHeight > this.clientHeight) {
+        this.addEventListener("wheel", stopPropagation);
+        this.addEventListener("touchstart", stopPropagation);
+      }
+    });
+
+    // update on window resize
     window.addEventListener("resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
@@ -81,26 +82,4 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }, 250);
     });
   });
-
-  // Fix for chat-feed scroll
-  const chatFeed = document.querySelector('.chat-feed');
-  
-  // Function to keep chat-feed scrolled to the bottom
-  function scrollToBottom() {
-    chatFeed.scrollTop = chatFeed.scrollHeight;
-  }
-
-  // Add new message and scroll to bottom after adding
-  document.getElementById('add-message').addEventListener('click', function () {
-    const newMessage = document.createElement('div');
-    newMessage.classList.add('message');
-    newMessage.textContent = 'New message';
-    chatFeed.appendChild(newMessage);
-    
-    // Scroll to the bottom after adding new message
-    scrollToBottom();
-  });
-
-  // Initial scroll to bottom if content overflows
-  scrollToBottom();
 });
