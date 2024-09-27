@@ -12,7 +12,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
   gsap.registerPlugin(ScrollTrigger, Flip);
   ScrollTrigger.normalizeScroll({
-    allowNestedScroll: true;
+    allowNestedScroll: true
   });
   // scrollflip component
   $("[tr-scrollflip-element='component']").each(function (index) {
