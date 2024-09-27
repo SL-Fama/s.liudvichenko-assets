@@ -1,7 +1,9 @@
 window.addEventListener("DOMContentLoaded", (event) => {
   // SETUP PLUGINS
   gsap.registerPlugin(ScrollTrigger, Flip);
-  ScrollTrigger.normalizeScroll(true);
+  ScrollTrigger.normalizeScroll({
+    allowNestedScroll: true
+  });
 
   // SETUP ELEMENTS
   let zoneEl = $("[js-scrollflip-element='zone']"),
