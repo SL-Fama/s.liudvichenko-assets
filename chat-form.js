@@ -25,10 +25,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const regularButton = wrapper.querySelector('.message--button');
         if (isValid) {
             disabledButton.style.display = 'none';
-            regularButton.style.display = 'block';
+            regularButton.style.display = 'flex';
         } else {
-            disabledButton.style.display = 'block';
-            regularButton.style.display = 'none';
+            disabledButton.style.display = 'flex';
+            regularButton.style.display = 'flex';
         }
     }
 
