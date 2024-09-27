@@ -35,7 +35,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         let zoneDifference = nextZoneDistance - thisZoneDistance;
         tl.add(
           Flip.fit(targetEl[0], nextZoneEl[0], {
-            smooth: true,
+            //smooth: true,
             duration: zoneDifference,
             ease: "power2.inOut"
           })
