@@ -14,8 +14,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Register GSAP plugins
   gsap.registerPlugin(ScrollTrigger, Flip);
 
-  // Remove or comment this if you don't want global scroll normalization
-  // ScrollTrigger.normalizeScroll(true);
+  // SCOPED NORMALIZATION: Target sections using a custom attribute
+  ScrollTrigger.normalizeScroll({
+    // Target only elements that have gsap-scroll-normalize="true" attribute
+    targets: "[gsap-scroll-normalize='true']"
+  });
 
   // Scrollflip component
   $("[tr-scrollflip-element='component']").each(function (index) {
