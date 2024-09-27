@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const nameInput = document.querySelector('[chat-form="client-name-input"]');
     const descriptionInput = document.querySelector('[chat-form="client-project-description-input"]');
 
+    // Add 'required' attribute to the project description input
+    descriptionInput.setAttribute('required', '');
+
     // Buttons inside wrappers
     const emailWrapper = document.querySelector('[chat-form="client-email-input"]').parentElement;
     const nameWrapper = document.querySelector('[chat-form="client-name-input"]').parentElement;
