@@ -1,24 +1,19 @@
 window.addEventListener("DOMContentLoaded", (event) => {
   // SETUP PLUGINS
   gsap.registerPlugin(ScrollTrigger, Flip);
-
-  // SCOPED NORMALIZATION: Target sections using a custom attribute
-  ScrollTrigger.normalizeScroll({
-    // Target only elements that have gsap-scroll-normalize="true" attribute
-    targets: "[gsap-scroll-normalize='true']"
-  });
+  //ScrollTrigger.normalizeScroll(true);
 
   // SETUP ELEMENTS
   let zoneEl = $("[js-scrollflip-element='zone']"),
-      targetEl = $("[js-scrollflip-element='target']"),
-      positionEl = $("[js-scrollflip-element='position']");
+    targetEl = $("[js-scrollflip-element='target']"),
+    positionEl = $("[js-scrollflip-element='position']");
 
   // SETUP TIMELINE
   let tl;
   function createTimeline() {
     if (tl) {
-      tl.kill(); // Kill the previous timeline if it exists
-      gsap.set(targetEl, { clearProps: "all" }); // Clear any applied properties
+      tl.kill();
+      gsap.set(targetEl, { clearProps: "all" });
     }
 
     tl = gsap.timeline({
@@ -38,9 +33,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
           nextZoneEl.offset().top + nextZoneEl.innerHeight() / 2;
         let thisZoneDistance = $(this).offset().top + $(this).innerHeight() / 2;
         let zoneDifference = nextZoneDistance - thisZoneDistance;
-
         tl.add(
           Flip.fit(targetEl[0], nextZoneEl[0], {
+            smooth: true,
             duration: zoneDifference,
             ease: "power2.inOut"
           })
@@ -51,7 +46,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
   createTimeline();
 
-  // SETUP RESIZE HANDLER
+  // SETUP RESIZE
   let resizeTimer;
   window.addEventListener("resize", function () {
     clearTimeout(resizeTimer);
@@ -69,8 +64,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       createTimeline();
     },
   });
-
-  // Trigger a function when the position element enters back into the viewport
+  // Trigger a function when the position element enters back the viewport
   ScrollTrigger.create({
     trigger: positionEl,
     start: "bottom top-=20%",
@@ -79,26 +73,4 @@ window.addEventListener("DOMContentLoaded", (event) => {
       createTimeline();
     },
   });
-
-  // FIX FOR CHAT-FEED SCROLLING
-  const chatFeed = document.querySelector('.chat-feed');
-  
-  // Function to keep the chat-feed scrolled to the bottom
-  function scrollToBottom() {
-    chatFeed.scrollTop = chatFeed.scrollHeight;
-  }
-
-  // Add a message and scroll to the bottom after the message is added
-  document.getElementById('add-message').addEventListener('click', function () {
-    const newMessage = document.createElement('div');
-    newMessage.classList.add('message');
-    newMessage.textContent = 'New message';
-    chatFeed.appendChild(newMessage);
-    
-    // Scroll to the bottom after adding new message
-    scrollToBottom();
-  });
-
-  // Initial scroll to bottom if content overflows
-  scrollToBottom();
 });
