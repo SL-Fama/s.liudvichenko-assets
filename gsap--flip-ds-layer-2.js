@@ -1,7 +1,6 @@
 window.addEventListener("DOMContentLoaded", (event) => {
   // SETUP PLUGINS
   gsap.registerPlugin(ScrollTrigger, Flip);
-  //ScrollTrigger.normalizeScroll(true);
 
   // SETUP ELEMENTS
   let zoneEl = $("[js-scrollflip-element='zone']"),
@@ -35,7 +34,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
         let zoneDifference = nextZoneDistance - thisZoneDistance;
         tl.add(
           Flip.fit(targetEl[0], nextZoneEl[0], {
-            //smooth: true,
             duration: zoneDifference,
             ease: "power2.inOut"
           })
