@@ -1,60 +1,60 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Input fields
+    // Content-editable fields
     const emailInput = document.querySelector('[chat-form="client-email-input"]');
     const nameInput = document.querySelector('[chat-form="client-name-input"]');
     const descriptionInput = document.querySelector('[chat-form="client-project-description-input"]');
 
-    // Add 'required' attribute to the project description input
-    descriptionInput.setAttribute('required', '');
+    // Hidden form input fields (using the chat-form attribute)
+    const emailHiddenInput = document.querySelector('[chat-form="form-email-input"]');
+    const nameHiddenInput = document.querySelector('[chat-form="form-name-input"]');
+    const descriptionHiddenInput = document.querySelector('[chat-form="form-project-description-input"]');
 
-    // Buttons inside wrappers
-    const emailWrapper = document.querySelector('[chat-form="client-email-input"]').parentElement;
-    const nameWrapper = document.querySelector('[chat-form="client-name-input"]').parentElement;
-    const descriptionWrapper = document.querySelector('[chat-form="client-project-description-input"]').parentElement;
-
-    // Corresponding span fields
+    // Span fields for showing real-time values in the chat feed
     const emailSpan = document.querySelector('[chat-form="client-email-message"]');
-    const nameSpan = document.querySelectorAll('[chat-form="client-name-message"]'); // Multiple spans
+    const nameSpans = document.querySelectorAll('[chat-form="client-name-message"]');
     const descriptionSpan = document.querySelector('[chat-form="client-project-description-message"]');
 
-    // Email validation function
+    // Validation function for email
     function validateEmail(email) {
         return email.includes('@') && email.includes('.');
     }
 
-    // Generic function to handle button swap
+    // Generic function to toggle buttons
     function toggleButton(wrapper, isValid) {
         const disabledButton = wrapper.querySelector('.message--button--disabled');
         const regularButton = wrapper.querySelector('.message--button');
         if (isValid) {
             disabledButton.style.display = 'none';
-            regularButton.style.display = 'flex'; // Show regular button
+            regularButton.style.display = 'flex';
         } else {
-            disabledButton.style.display = 'flex'; // Show disabled button
+            disabledButton.style.display = 'flex';
             regularButton.style.display = 'none';
         }
     }
 
-    // Update span content and validate email
+    // Update the chat feed and hidden fields for email
     emailInput.addEventListener('input', function () {
-        const email = emailInput.value;
+        const email = emailInput.textContent.trim();
         emailSpan.textContent = email; // Update chat span
-        toggleButton(emailWrapper, validateEmail(email)); // Toggle buttons based on validation
+        emailHiddenInput.value = email; // Update hidden form field
+        toggleButton(emailInput.closest('[chat-form="input-wrapper"]'), validateEmail(email)); // Toggle buttons
     });
 
-    // Update span content and validate name (not empty)
+    // Update the chat feed and hidden fields for name
     nameInput.addEventListener('input', function () {
-        const name = nameInput.value;
-        nameSpan.forEach(span => {
-            span.textContent = name; // Update all chat spans
+        const name = nameInput.textContent.trim();
+        nameSpans.forEach(span => {
+            span.textContent = name; // Update all spans in the chat feed
         });
-        toggleButton(nameWrapper, name.length > 0); // Toggle buttons based on validation
+        nameHiddenInput.value = name; // Update hidden form field
+        toggleButton(nameInput.closest('[chat-form="input-wrapper"]'), name.length > 0); // Toggle buttons
     });
 
-    // Update span content and validate project description (not empty)
+    // Update the chat feed and hidden fields for project description
     descriptionInput.addEventListener('input', function () {
-        const description = descriptionInput.value;
+        const description = descriptionInput.textContent.trim();
         descriptionSpan.textContent = description; // Update chat span
-        toggleButton(descriptionWrapper, description.length > 0); // Toggle buttons based on validation
+        descriptionHiddenInput.value = description; // Update hidden form field
+        toggleButton(descriptionInput.closest('[chat-form="input-wrapper"]'), description.length > 0); // Toggle buttons
     });
 });
